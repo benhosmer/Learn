@@ -1,0 +1,12 @@
+name = Lessons
+description = Provide lessons for learning how to use and contribute to Drupal.
+core = 7.x
+package = "Learn Drupal"
+project = "Lessons"
+dependencies[] = ctools
+dependencies[] = features
+
+files[] = lessons.install
+files[] = lessons.module
+files[] = plugins/export_ui/lessons_ctools_export_ui.inc
+files[] = plugins/export_ui/lessons_export_ui.class.php

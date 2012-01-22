@@ -1,0 +1,134 @@
+<?php
+
+/**
+ * @file
+ *  Install lessons module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function lessons_schema() {
+  $schema['lessons_lesson'] = array(
+    'description' => 'Table storing lesson (myobj), definitions.',
+    'export' => array(
+      'key' => 'name',
+      'key name' => 'Name',
+      'primary key' => 'lid',
+      'identifier' => 'lessons',              // Exports will be as $lessons
+      'default hook' => 'default_lessons',    // Function hook name.
+      'api' => array(
+        'owner' => 'lessons',
+        'api' => 'default_lessons',           // Base name for api include files.
+        'minimum_version' => 1,
+        'current_version' => 1,
+      ),
+    ),
+    'fields' => array(
+      // lesson id
+      'lid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary ID field for the table. Not used for anything '
+                       . 'except internal lookups.',
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      // name (machine, unique id)
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Unique ID for this lesson object. Used to identify it '
+                       . 'programmatically.',
+      ),
+      // title (human readable)
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Human readable lesson title.',
+      ),
+      'author' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Lesson author',
+      ),
+      'project' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Name of the module, theme or project this lesson pertains to.',
+      ),
+      'project_type' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Type of project: Core, contrib, custom.',
+      ),
+      'lesson_type' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Type of lesson. (E.g. Configuration, code, etc.)',
+      ),
+      // description
+      'description' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Provide a brief overview of the lesson.',
+      ),
+      'version' => array(
+        'type' => 'varchar',
+        'length' => 10,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Drupal version(s)',
+      ),
+      // steps
+      'steps' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => 'Lessons are presented in steps: Step 1: Do this. Step 2: Do that. Step N: Now you have completed the lesson.',
+      ),
+      // required permission
+      'permission' => array(
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '', 
+        'description' => 'Permissions required to access this lesson.',
+      ), 
+    ),
+    'primary key' => array('lid'),
+    'unique keys' => array(
+      'name' => array('name'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function lessons_uninstall() {
+  // TODO Remove lesson items from the variables table.  
+}
+
+/**
+ * Implements hook_update_N().
+ */
+/*
+function lessons_update_6001() {
+}
+// */

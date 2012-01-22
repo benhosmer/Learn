@@ -1,0 +1,540 @@
+<?php
+/**
+ * @file lessons.module
+ */
+
+//-------------------------------------------//
+// Drupal core hooks                         //
+//-------------------------------------------//
+
+/**
+ * Implementation of hook_help()
+ */
+function lessons_help($path, $arg) {
+  if ($path == 'admin/help#lessons') {
+    $txt = 'Lessons for learning about and contributing to Drupal.'; 
+    $output = t($txt);
+    return $output;
+  }
+}
+/**
+ * Implementation of hook_menu().
+ */
+function lessons_menu() {
+  $items = array();
+
+  $items['admin/structure/lessons/%/export'] = array(
+    'title' => 'export',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('lessons_export_lesson', 3), 
+    'access arguments' => array('export lessons'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['lessons'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('lessons_page_default'),
+    'access arguments' => array('access content'),
+    'menu_name' => 'main-menu',
+    'type' => MENU_CALLBACK,
+  ); 
+  $items['lessons/%lesson'] = array(
+    'title callback' => 'lessons_lesson_page_title',
+    'title arguments' => array(1),
+    // The page callback also invokes drupal_set_title() in case
+    // the menu router's title is overridden by a menu link.
+    'page callback' => 'lessons_lesson_page_view',
+    'page arguments' => array(1),
+    'access callback' => 'lessons_access',
+    'access arguments' => array(1),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function lessons_perm() {
+  return array('administer lessons', 'manage lessons', 'export lessons');
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+/*
+function lessons_theme() {
+  return array(
+  );  
+}
+// */
+
+/**
+ * Implementation of hook_form_alter().
+ */
+/* TODO Revisit for file handling.
+function lessons_form_alter(&$form, &$form_state, $form_id) {
+  // Modify forms for adding and editing lesson objects
+  if ($form_id == 'ctools_export_ui_edit_item_form' && arg(2) == 'lesson') { 
+    // admin/build/lesson/add
+    if (arg(3) == 'add' ||
+      // admin/build/lesson/list/lessons_name/edit
+      (arg(3) == 'list' && (arg(5) == 'edit' || arg(5) == 'clone') )) {
+      // Prep data to save.
+      $form['#validate'][] = 'lessons_ctools_export_ui_edit_item_form_validate';
+      $form['#submit'][] = 'lessons_ctools_export_ui_edit_item_form_submit';
+    }
+  // Modify forms for deleting and reverting lesson objects
+  } else if ($form_id == 'ctools_export_ui_delete_confirm_form' && arg(2) == 'lesson') {
+    $form['#submit'][] = 'lessons_ctools_export_ui_delete_confirm_form_submit';
+  }
+}
+
+//--------------------------------------------------/
+// Ctools plugin                                    /
+//--------------------------------------------------/
+/**
+ * Implmenentation of hook_ctools_plugin_directory.
+ */
+function lessons_ctools_plugin_directory($module, $plugin) {
+  if ($plugin == 'export_ui') {
+    return 'plugins/'. $plugin;
+  }
+}
+
+/**
+* Implementation of hook_ctools_plugin_api().
+*
+* Tell CTools that we support the default_mymodule_presets API.
+*/
+function lessons_ctools_plugin_api($owner, $api) {
+  if ($owner == 'lessons' && $api == 'default_lessons_lesson') {
+    return array('version' => 1);
+  }
+}
+
+//--------------------------------------------------/
+// Ctools export hooks                              /
+//--------------------------------------------------/
+
+/**
+ * Export a myobj and display it in a form.
+ * 
+ * @param $name
+ *  string, unique id for object
+ */
+function lessons_export_lesson(&$form_state, $name) {
+  ctools_include('export');
+  $obj = lessons_lesson_load($name);
+  drupal_set_title(check_plain($obj->description));
+  $code = lessons_lesson_export($obj);
+  $lines = substr_count($code, "\n");
+
+  $form['export'] = array(
+    '#title' => t('Export data'),
+    '#type' => 'textarea',
+    '#value' => $code,
+    '#rows' => $lines,
+    '#description' => t('Copy the export text and paste it into another myobj using the import function.'),
+  );
+  return $form;
+}
+
+/**
+ * Load a single myobj.
+ */
+function lessons_lesson_load($name) {
+  ctools_include('export');
+  $result = ctools_export_load_object('lessons_lesson', 'names', array($name)); 
+  if (isset($result[$name])) {
+    return $result[$name];
+  }
+}
+
+/**
+ * Export a myobj.
+ */
+function lessons_lesson_export($obj, $indent = '') {
+  ctools_include('export');
+  $output = ctools_export_object('lessons_lesson', $obj, $indent);
+  return $output;
+}
+
+/**
+ * Save a single myobj.
+ */
+function lessons_lesson_save(&$myobj) {
+    $update = (isset($myobj->sid) && is_numeric($myobj->sid)) ? array('sid') : array();
+      return drupal_write_record('lessons_lesson', $myobj, $update);
+}
+
+//-------------------------------------------------/
+// Features hooks                                  /
+//-------------------------------------------------/
+/**
+ * Implementation of hook_features_files().
+ * 
+ * @todo This hook is provided by a patched version of 
+ * Features. See http://github.com/bhirsch/features.
+ */
+/* TODO Revisit for file handling.
+function lessons_features_files($export, $module_name) {
+  $add_files = array();
+  if ($lessons_lesson = $export['features']['lessons_lesson']) {
+    // Get css files for each lesson. (Multiple lesson can be exported at once). 
+    $i = 0;
+    foreach ($lessons_lesson as $name) {
+      $lessons_path = file_directory_path() ."/lesson/$name";
+      // Get lesson's CSS file
+      //$add_files[$i]->name = $module_name .'.'. $name;
+      $add_files[$i]->name = $name;
+      //$add_files[$i]->basename = $module_name .'.'. $name .'.css'; 
+      $add_files[$i]->basename = $name .'.css'; 
+      //$add_files[$i]->filename = $lessons_path ."/$name.css";
+      $add_files[$i]->filename = $lessons_path ."/$name.css";
+      //$add_files[$i]->subdir = "lesson/$module_name.$name";
+      $add_files[$i]->subdir = "lesson/$name";
+      // Check for images.
+      $images_path = $lessons_path .'/images';
+      foreach (@file_scan_directory($images_path, '.*') as $file) {
+        $i++;
+        $add_files[$i]->name = $file->name;
+        $add_files[$i]->basename = $file->basename;
+        $add_files[$i]->filename = $file->filename;
+        $add_files[$i]->subdir = "lesson/$name/images";
+      }
+      $i++;
+    }
+  }
+  return $add_files;
+}
+// */
+
+//-------------------------------------------//
+// Lessons                                   //
+//-------------------------------------------//
+
+/**
+ * The lessons page uses a simple system settings form.
+ * 
+ * The form array is organized like this: 
+ * 
+ *   $form[$lesson->project_type][$lesson->project][$lesson->lesson_type][$lesson->name]
+ * 
+ *   e.g.
+ * 
+ *   $form['core']['node']['configuration']['how_to_create_node_types'];
+ *   $form['core']['node']['configuration']['how_to_add_fields_to_nodes'];
+ *   $form['core']['node']['code']['how_to_use_hook_node_presave'];
+ * 
+ *   $form['contrib']['lessons']['configuration']['how_to_create_lessons'];
+ *   $form['contrib']['lessons']['code']['how_to_customize_the_lessons_page'];
+ * 
+ * @todo Add form controls / filters
+ *  - toggle descriptions on and off
+ *  - toggle lesson types and project types on and off
+ *  - autosave on checkbox click (maybe this is better included in lessons_style, make lesson green when it is complete and saved)
+ */
+function lessons_page_default($form, &$form_state) {
+  $lessons = lessons_get_lessons();
+
+  // Create one checkbox per lesson.
+  foreach ($lessons as $lesson) {
+    $form[$lesson->project_type][$lesson->project][$lesson->lesson_type][$lesson->name] = array(
+      '#type' => 'checkbox',
+      '#title' => l(t($lesson->title), "lessons/$lesson->name"),
+      '#default_value' => variable_get($lesson->name, FALSE),
+      '#description' => t($lesson->description),
+    );
+  }
+
+  // Add section headings for project type (e.g. Core, Custom, Contrib).
+  $project_types = lessons_get_project_types();
+  foreach ($form as $project_type => $value) {
+    $form[$project_type]['name'] = array(
+      '#type' => 'item',
+      '#title' => $project_types[$project_type],
+      '#weight' => -100,
+    );
+  }
+
+  return system_settings_form($form);
+}
+
+/**
+ * Callback for lessons/$lesson_name.
+ * 
+ * @param $lesson
+ *  Lesson object.
+ * 
+ * @return $build
+ *  Render array.
+ */
+function lessons_lesson_page_view($lesson) {
+  // If there is a menu link to this lesson, the link becomes the last part
+  // of the active trail, and the link name becomes the page title.
+  // Thus, we must explicitly set the page title to be the lesson title.
+  drupal_set_title($lesson->title);
+
+  $build = array();
+  // CONTINUE HERE. BUILD RENDER ARRAY AND PROVIDE BASIC LESSON PAGE THEMING.
+
+  return 'hello world';
+}
+
+/**
+ * Lesson access control. Check for special permission requirements.
+ * If there are none, check for 'access content' permission.
+ */
+function lessons_access($lesson) {
+  if ($lesson->permission) {
+    return user_access($lesson->permission);  
+  }
+  else {
+    return user_access('access content');
+  } 
+}
+
+/**
+ * @param $name
+ *  string, lesson name.
+ * 
+ * @return $lesson, lesson object.
+ */
+function lessons_get($name) {
+  ctools_include('export');
+  return lessons_lesson_load($name);
+}
+
+/**
+ * This function enables us to auto load a lesson object
+ * with a path like lesson/%lesson. 
+ */
+function lesson_load($name) {
+  return lessons_get($name);  
+}
+
+/**
+ * @param $lesson
+ *  Lesson object.
+ *
+ * @return $title
+ *   Lesson title.
+ */
+function lessons_lesson_page_title($lesson) {
+ return t($lesson->title);
+}
+
+/**
+ * @param $lessons
+ *  Array of lesson objects returned by lessons_get_lessons().
+ * 
+ * @return $projects
+ *  Array of project names.
+ */
+function lessons_get_projects($lessons = array()) {
+  if (!$lessons) {
+    $lessons = lessons_get_lesson();  
+  }
+
+  $projects = array();
+  foreach ($lessons as $lesson) {
+    $projects[] = $lesson->project;
+  }
+
+  return array_unique($projects);
+}
+
+/**
+ * Return project types. Lessons are organized by these types on the
+ * lessons/add form and on the lessons listing form.
+ * 
+ * @return $project_types
+ *  Array.
+ */
+function lessons_get_project_types() {
+  return array(
+    'core' => t('Core'),
+    'contrib' => t('Contrib'),
+    'custom' => t('Custom'),
+  );  
+}
+
+/**
+ * @param $names_only
+ *  Boolean.
+ * 
+ * @return $lessons
+ *  Array of lesson objects or lesson titles keyed by name.
+ */
+function lessons_get_lessons($names_only = FALSE) {
+  ctools_include('export');
+  $lessons = ctools_export_load_object('lessons_lesson'); 
+
+  if ($names_only) {
+    $names = array();
+    foreach ($lessons as $lesson) {
+      $names[$lesson->name] = $lesson->title;  
+    }
+    $lessons = $names; 
+  }
+
+  return $lessons;
+}
+
+/**
+ * Save an edited lesson and handle related workflow relating to lesson state.
+ *  - Copy files from module to files directory when lesson is newly overridden.
+ *  - Save object when Ctools hasn't saved it already.
+ * 
+ * @param $lesson
+ *  Subtheme object.
+ * 
+ * @param $op
+ *  array, options can include any (or none) or the following:
+ *  $op = array('in code only', 'ctools save', 'clone')
+ *  - 'in code only' 
+ *        In case some other module saves or
+ *        modifies the lesson object before this function is called, 
+ *        'in code only' tells lessons_save() to 
+ *        copy files from a features module to the files/lesson 
+ *        directory, even if $lesson->in_code_only is false.
+ *  - 'ctools save'
+ *        If lessons_save() is being called from
+ *        a Ctools form and the $lesson object has already been saved,
+ *        this indicates that we don't need to call lessons_lesson_save() 
+ *        here, just let this function take care of the additional
+ *        steps (otherwise you get an ugly mysql error).
+ *  - 'clone'
+ *        A lesson is being cloned. Copy files from the original lesson
+ *        to a new directory for the new lesson.
+ */
+/* TODO Revisit for file handling.
+function lessons_save($lesson, $op = array()) {
+  $ctools_save = (in_array('ctools save', $op)) ? TRUE : FALSE;
+  $clone = (in_array('clone', $op)) ? TRUE : FALSE; 
+  $in_code_only = (in_array('in code only', $op)) ? TRUE : FALSE; 
+
+  if (!$ctools_save) {
+    // Ctools hook, mymodule_myobj_save($obj).
+    lessons_lesson_save($lesson);
+  } 
+
+  // If lesson being saved is in code only (newly overridden)
+  // copy images to files/lessons/$lesson directory.
+  if ($lesson->in_code_only || $in_code_only || arg(3) == 'add') {
+    // Copy image files
+    lessons_copy_files($lesson); // @todo add error handling
+  }
+
+  if ($clone) {
+    $original = arg(4);
+    // Copy image files
+    lessons_copy_files($lesson, $original); // @todo add error handling
+  }
+
+}
+// */
+
+
+/**
+ * When a lesson stored in code is modified through Drupal's GUI
+ * (a lesson that is disabled by default becomes enabled), copy files
+ * from the lesson's features module into the files directory,
+ * otherwise relative links images will break when 
+ * lessons link to files in the files/lesson/lessons_name directory.
+ * 
+ * @param $lesson
+ *  object, lessons_lesson object.
+ *
+ * @param $original
+ *  string, the original being cloned (if a lesson is being cloned)
+ * 
+ */
+/* TODO Revisit for file handling.
+function lessons_copy_files($lesson, $original = NULL) {
+  $name = $lesson->name;
+  $new = (arg(3) == 'add') ? TRUE : FALSE; // Brand new lesson.
+
+  // Get path(s) to image(s)
+  if ($new) { // A new lesson is being created.
+    // Build an array of image paths for each mtheme_selector with images.  
+    $images_paths = array();
+    foreach ($lesson->selectors as $selector) {
+      $images_paths[] = mtheme_images_path($selector); 
+    }
+  } else if (!$original) { // An existing lesson is being overridden
+    $images_path = lessons_images_path($lesson, 'in code only'); 
+  } else { // An existing lesson is being cloned.
+    $original = lessons_get($original);
+    $images_path = lessons_images_path($original);
+  }
+
+  // Copy images.
+  $new_images_path = lessons_images_path($lesson, 'files'); 
+  file_check_directory($new_images_path, FILE_CREATE_DIRECTORY);
+  if ($new) {
+   // Check each mtheme_selector for images. Copy any we find.
+   foreach ($images_paths as $images_path) {
+    foreach (@file_scan_directory($images_path, '.*') as $file) {
+      $file_path = $new_images_path ."/". $file->basename;
+      file_copy($file->filename, $file_path, FILE_EXISTS_REPLACE);
+    }
+   } 
+  } else { // Subtheme is being cloned or overridden.
+    foreach (@file_scan_directory($images_path, '.*') as $file) {
+      $file_path = $new_images_path ."/". $file->basename;
+      file_copy($file->filename, $file_path, FILE_EXISTS_REPLACE);
+    }
+  } 
+  // return ? // @todo Add error handling. Notify user if unsuccessful? 
+              // These file functions do a pretty good job notifying 
+              // administrators about errors,
+              // still it seems like there should be something
+              // lesson-specific here. 
+}
+// */
+
+/**
+ * Find the path to the lesson's images directory.
+ * 
+ * If no status is passed, assume we're finding out the
+ * current images file location. (If the lesson is in code only, 
+ * the images directory lives in a features module. Otherwise, the 
+ * images directory lives in files/lesson/lessons_name/images.
+ * If a status is passed, return the requested path (for an images directory
+ * when in code only, or an images directory in the files directory).
+ * 
+ * @param $lesson
+ *  object, lessons_lesson object. 
+ *  or
+ *  string, lesson name, only use string if you know images are in files directory 
+ * 
+ * @param $status
+ *  string, 'in code only' OR 'files'
+ * 
+ * @return
+ *  string, path/to/images/directory.
+ */
+/* TODO Revisit for file handling.
+function lessons_images_path($lesson, $status = FALSE) {
+
+  if (is_object($lesson)) {
+    $name = $lesson->name;
+  } else if (is_string($lesson)) {
+    $name = $lesson;  
+  }
+
+  if (!$status && $lesson->in_code_only || $status == 'in code only') { 
+    $feature = lessons_get_feature($name);
+    $module_name = $feature->name;
+    $module_path = drupal_get_path('module', $module_name);
+    $path = $module_path ."/lesson/$name/images";
+  } else { // images aren't stored in a features module, or $status == 'files' 
+    $path = file_directory_path() .'/lesson/'. $name .'/images';  
+  }
+
+  return $path;
+}
+// */
+
