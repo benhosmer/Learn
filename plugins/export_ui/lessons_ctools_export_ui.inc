@@ -86,7 +86,7 @@ function lessons_ctools_export_ui_form(&$form, &$form_state) {
     ),
   );
   $form['version'] = array(
-    '#type' => 'checkboxes',
+    '#type' => 'radios',
     '#title' => t('Drupal Version(s)'),
     '#description' => t("Which Drupal version(s) does this lesson apply to?"),
     '#options' => array(
