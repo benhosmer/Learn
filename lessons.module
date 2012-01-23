@@ -62,12 +62,42 @@ function lessons_perm() {
 /**
  * Implementation of hook_theme().
  */
-/*
 function lessons_theme() {
   return array(
+    'lesson' => array(
+      'render element' => 'elements',
+      'template' => 'lesson',
+    ),
   );  
 }
-// */
+
+ /**
+  * Process variables for lesson.tpl.php
+  *
+  * @see lesson.tpl.php
+  */
+function template_preprocess_lesson(&$variables) {
+  $lesson = $variables['elements']['#lesson'];
+  $variables['title']         = check_plain($lesson->title);
+  $variables['author']        = t('By') . ' ' . check_plain($lesson->author);
+  $variables['project']       = t('Project:') . ' ' . check_plain($lesson->project);
+  $variables['project_type']  = check_plain($lesson->project_type);
+  $variables['lesson_type']   = check_plain($lesson->lesson_type);
+  $variables['description']   = check_plain($lesson->description);
+  $variables['version']       = t('Version: Drupal') . ' ' . check_plain($lesson->version);
+  $variables['steps']         = check_markup($lesson->steps);
+  $variables['permission']    = check_plain($lesson->permission);
+  // These are from Ctools so they shouldn't really need to be checked.
+  // But checking anyway for good measure.
+  $variables['name']          = check_plain($lesson->name);
+  $variables['export_module'] = (property_exists($lesson, 'export_module')) ? check_plain($lesson->export_module) : FALSE;
+  $variables['in_code_only']  = (property_exists($lesson, 'in_code_only')) ? check_plain($lesson->in_code_only) : FALSE;
+  $variables['type']          = check_plain($lesson->type);
+  $variables['table']         = check_plain($lesson->table);
+  $variables['export_type']   = check_plain($lesson->export_type);
+  // Confirm lesson is a full lesson page.
+  $variables['page'] = (arg(0) == 'lesson' && arg(1) == $lesson->name) ? TRUE : FALSE; 
+}
 
 /**
  * Implementation of hook_form_alter().
@@ -271,15 +301,28 @@ function lessons_page_default($form, &$form_state) {
  *  Render array.
  */
 function lessons_lesson_page_view($lesson) {
+  if (!$lesson) {
+    $text = t('The lesson, !lesson, was not found. It is either disabled or unavailable. Try enabling it via !lesson_admin or !features_admin or contact an administrator.', 
+      array('!lesson' => arg(1), 
+            '!lesson_admin' => l(t('Lessons'), 'admin/structure/lessons'),
+            '!features_admin' => l(t('Features'), 'admin/structure/features'),
+      )
+    );
+    drupal_set_message($text, 'warning');
+    return $text;
+  }
   // If there is a menu link to this lesson, the link becomes the last part
   // of the active trail, and the link name becomes the page title.
   // Thus, we must explicitly set the page title to be the lesson title.
   drupal_set_title($lesson->title);
 
   $build = array();
-  // CONTINUE HERE. BUILD RENDER ARRAY AND PROVIDE BASIC LESSON PAGE THEMING.
+  $build['#theme'] = 'lesson';
+  $build['#lesson'] = $lesson;
 
-  return 'hello world';
+  // @todo Consider adding a drupal_alter here, like node_view().
+
+  return $build; 
 }
 
 /**
