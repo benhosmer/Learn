@@ -1,6 +1,6 @@
 <?php
 /**
- * CTools export UI extending class. Slightly customized for Context.
+ * CTools export UI extending class. Slightly customized for Lessons.
  *
  * Based on: context/context_ui/export_ui/context_export_ui.class.php.
  */
@@ -36,26 +36,26 @@ class lessons_export_ui extends ctools_export_ui {
 
   function list_build_row($item, &$form_state, $operations) {
     $name = $item->name;
-    // Add a row for packages.
-    $package = !empty($item->package) ? $item->package : t('< Unpackageged >');
-    if (!isset($this->rows[$package])) {
-      $this->rows[$package]['data'] = array();
-      $this->rows[$package]['data'][] = array('data' => check_plain($package), 'colspan' => 3, 'class' => array('package'));
-      $this->sorts["{$package}"] = $package;
+    // Add a row for project_types.
+    $project_type = !empty($item->project_type) ? $item->project_type : t('< missing project_type >');
+    if (!isset($this->rows[$project_type])) {
+      $this->rows[$project_type]['data'] = array();
+      $this->rows[$project_type]['data'][] = array('data' => check_plain($project_type), 'colspan' => 3, 'class' => array('project_type'));
+      $this->sorts["{$project_type}"] = $project_type;
     }
 
     // Build row for each context item.
-    $this->rows["{$package}:{$name}"]['data'] = array();
-    $this->rows["{$package}:{$name}"]['class'] = !empty($item->disabled) ? array('ctools-export-ui-disabled') : array('ctools-export-ui-enabled');
-    $this->rows["{$package}:{$name}"]['data'][] = array(
-      'data' => check_plain($name) . "<div class='description'>" . check_plain($item->description) . "</div>",
+    $this->rows["{$project_type}:{$name}"]['data'] = array();
+    $this->rows["{$project_type}:{$name}"]['class'] = !empty($item->disabled) ? array('ctools-export-ui-disabled') : array('ctools-export-ui-enabled');
+    $this->rows["{$project_type}:{$name}"]['data'][] = array(
+      'data' => '<div class="title">' . $item->title . '</div><div class="name">'. check_plain($name) . "</div><div class='description'>" . check_plain($item->description) . "</div>",
       'class' => array('ctools-export-ui-name')
     );
-    $this->rows["{$package}:{$name}"]['data'][] = array(
+    $this->rows["{$project_type}:{$name}"]['data'][] = array(
       'data' => check_plain($item->type),
       'class' => array('ctools-export-ui-storage')
     );
-    $this->rows["{$package}:{$name}"]['data'][] = array(
+    $this->rows["{$project_type}:{$name}"]['data'][] = array(
       'data' => theme('links', array(
         'links' => $operations,
         'attributes' => array('class' => array('links inline'))
@@ -63,29 +63,29 @@ class lessons_export_ui extends ctools_export_ui {
       'class' => array('ctools-export-ui-operations'),
     );
 
-    // Sort by package, name.
-    $this->sorts["{$package}:{$name}"] = $package . $name;
+    // Sort by project_type, name.
+    $this->sorts["{$project_type}:{$name}"] = $project_type . $name;
     /*
-    // Add a row for packages (feature sets, "packages" in context module).
-    $package = !empty($item->package) ? $item->package : t('< No Package / Feature Set >');
-    if (!isset($this->rows[$package])) {
-      $this->rows[$package]['data'] = array();
-      $this->rows[$package]['data'][] = array('data' => check_plain($package), 'colspan' => 3, 'class' => array('package');
-      $this->sorts["{$package}"] = $package;
+    // Add a row for project_types (feature sets, "project_types" in context module).
+    $project_type = !empty($item->project_type) ? $item->project_type : t('< No Package / Feature Set >');
+    if (!isset($this->rows[$project_type])) {
+      $this->rows[$project_type]['data'] = array();
+      $this->rows[$project_type]['data'][] = array('data' => check_plain($project_type), 'colspan' => 3, 'class' => array('project_type');
+      $this->sorts["{$project_type}"] = $project_type;
     }
 
     // Build row for each context item.
-    $this->rows["{$package}:{$name}"]['data'] = array();
-    $this->rows["{$package}:{$name}"]['class'] = !empty($item->disabled) ? array('ctools-export-ui-disabled') : array('ctools-export-ui-enabled');
-    $this->rows["{$package}:{$name}"]['data'][] = array(
+    $this->rows["{$project_type}:{$name}"]['data'] = array();
+    $this->rows["{$project_type}:{$name}"]['class'] = !empty($item->disabled) ? array('ctools-export-ui-disabled') : array('ctools-export-ui-enabled');
+    $this->rows["{$project_type}:{$name}"]['data'][] = array(
       'data' => check_plain($name) . "<div class='description'>" . check_plain($item->description) . "</div>",
       'class' => array('ctools-export-ui-name')
     );
-    $this->rows["{$package}:{$name}"]['data'][] = array(
+    $this->rows["{$project_type}:{$name}"]['data'][] = array(
       'data' => check_plain($item->type),
       'class' => array('ctools-export-ui-storage')
     );
-    $this->rows["{$package}:{$name}"]['data'][] = array(
+    $this->rows["{$project_type}:{$name}"]['data'][] = array(
       'data' => theme('links', array(
         'links' => $operations,
         'attributes' => array('class' => array('links inline'))
@@ -93,8 +93,8 @@ class lessons_export_ui extends ctools_export_ui {
       'class' => array('ctools-export-ui-operations'),
     );
 
-    // Sort by package, name.
-    $this->sorts["{$package}:{$name}"] = $package . $name;
+    // Sort by project_type, name.
+    $this->sorts["{$project_type}:{$name}"] = $project_type . $name;
 // */
     // */
   }
