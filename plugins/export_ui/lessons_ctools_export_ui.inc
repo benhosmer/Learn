@@ -98,14 +98,14 @@ function lessons_ctools_export_ui_form(&$form, &$form_state) {
   $form['description'] = array(
     '#type' => 'textfield',
     '#title' => t('Description'),
-    '#description' => t('Explain what someone will be able to do after completing this lesson.'),
+    '#description' => t('Overview. Example: Learn to create content types and add fields to them.'),
     '#default_value' => $lesson->description,
     '#maxlength' => 255,
   );
    $form['steps'] = array(
      '#type' => 'textarea',
      '#title' => t('Steps'),
-     '#description' => t('TODO Add links to markup help and example lesson format.'),
+     '#description' => t("Lessons should be formatted as a numbered list of steps to follow. If it takes someone more than 15 - 30 minutes to complete all the instructions in this lesson, consider breaking it up into a few smaller, more focused, lessons. Multiple lessons can be grouped together into a 'lesson plan'. TODO add link to create lesson plans here."),
      '#default_value' => $lesson->steps,
    );
   $form['permission'] = array(
