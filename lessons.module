@@ -77,6 +77,8 @@ function lessons_theme() {
   * @see lesson.tpl.php
   */
 function template_preprocess_lesson(&$variables) {
+  global $language;
+
   $lesson = $variables['elements']['#lesson'];
   $variables['title']         = check_plain($lesson->title);
   $variables['author']        = t('By') . ' ' . check_plain($lesson->author);
@@ -85,7 +87,7 @@ function template_preprocess_lesson(&$variables) {
   $variables['lesson_type']   = check_plain($lesson->lesson_type);
   $variables['description']   = check_plain($lesson->description);
   $variables['version']       = t('Version: Drupal') . ' ' . check_plain($lesson->version);
-  $variables['steps']         = check_markup($lesson->steps);
+  $variables['steps']         = check_markup($lesson->steps, 'full_html', $language->language);
   $variables['permission']    = check_plain($lesson->permission);
   // These are from Ctools so they shouldn't really need to be checked.
   // But checking anyway for good measure.
