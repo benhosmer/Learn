@@ -28,14 +28,14 @@
  */
 ?>
 <div class="lessons">
-  <div class="lesson <? print "$name $project $project_type $lesson_type"?>">
-    <? if (!$page) : ?>
-      <div class="lesson-title"><? print $title; ?></div>
-    <? endif; ?>
-    <div class="lesson-author"><? print $author; ?></div>
-    <div class="lesson-version"><? print $version; ?></div>
-    <div class="lesson-project"><? print $project; ?></div>
-    <div class="lesson-description"><? print $description; ?></div>
-    <div class="lesson-steps"><? print $steps; ?></div>
+  <div class="lesson <?php print "$name $project $project_type $lesson_type"?>">
+    <?php if (!$page) : ?>
+      <div class="lesson-title"><?php print $title; ?></div>
+    <?php endif; ?>
+    <div class="lesson-author"><?php print $author; ?></div>
+    <div class="lesson-version"><?php print $version; ?></div>
+    <div class="lesson-project"><?php print $project; ?></div>
+    <div class="lesson-description"><?php print $description; ?></div>
+    <div class="lesson-steps"><?php print $steps; ?></div>
   </div>
 </div>
