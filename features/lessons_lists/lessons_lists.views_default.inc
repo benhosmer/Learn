@@ -147,7 +147,7 @@ function lessons_lists_views_default_views() {
   $handler->display->display_options['filters']['field_lesson_type_value']['field'] = 'field_lesson_type_value';
   $handler->display->display_options['filters']['field_lesson_type_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_lesson_type_value']['expose']['operator_id'] = 'field_lesson_type_value_op';
-  $handler->display->display_options['filters']['field_lesson_type_value']['expose']['label'] = 'Lesson type (field_lesson_type)';
+  $handler->display->display_options['filters']['field_lesson_type_value']['expose']['label'] = 'Lesson type';
   $handler->display->display_options['filters']['field_lesson_type_value']['expose']['operator'] = 'field_lesson_type_value_op';
   $handler->display->display_options['filters']['field_lesson_type_value']['expose']['identifier'] = 'lesson_type';
   $handler->display->display_options['filters']['field_lesson_type_value']['expose']['reduce'] = 0;
@@ -169,7 +169,7 @@ function lessons_lists_views_default_views() {
   $handler->display->display_options['filters']['field_lesson_project_type_value']['field'] = 'field_lesson_project_type_value';
   $handler->display->display_options['filters']['field_lesson_project_type_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_lesson_project_type_value']['expose']['operator_id'] = 'field_lesson_project_type_value_op';
-  $handler->display->display_options['filters']['field_lesson_project_type_value']['expose']['label'] = 'Project type (field_lesson_project_type)';
+  $handler->display->display_options['filters']['field_lesson_project_type_value']['expose']['label'] = 'Project type';
   $handler->display->display_options['filters']['field_lesson_project_type_value']['expose']['operator'] = 'field_lesson_project_type_value_op';
   $handler->display->display_options['filters']['field_lesson_project_type_value']['expose']['identifier'] = 'project_type';
   $handler->display->display_options['filters']['field_lesson_project_type_value']['expose']['reduce'] = 0;
