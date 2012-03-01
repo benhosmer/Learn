@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Lessons: Curriculum feature.
+ */
+
+include_once('lessons_curriculum.features.inc');
