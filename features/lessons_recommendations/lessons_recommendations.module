@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Lessons: Recommendations feature.
+ */
+
+include_once('lessons_recommendations.features.inc');

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Lessons: Bookmarks feature.
+ */
+
+include_once('lessons_bookmarks.features.inc');
