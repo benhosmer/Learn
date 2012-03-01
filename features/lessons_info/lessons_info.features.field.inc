@@ -158,9 +158,9 @@ function lessons_info_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          'core ' => ' Core (part of Drupal when you download it from drupal.org without any add-ons)',
-          'contrib ' => ' Contrib (contributed modules, themes and install profiles on drupal.org)',
-          'other ' => ' Other',
+          'core' => 'Core',
+          'contrib' => 'Contrib',
+          'other' => 'Other',
         ),
         'allowed_values_function' => '',
       ),
@@ -171,7 +171,9 @@ function lessons_info_field_default_fields() {
       'bundle' => 'lesson',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Core: Part of Drupal when you download it from drupal.org without any add-ons
+Contrib: Contributed modules, themes and install profiles on drupal.org
+Other: Not core or contrib',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -221,8 +223,9 @@ function lessons_info_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          'config' => 'Configuration (lessons about site building using Drupal\'s user interface, no knowledge of code required)',
-          'code' => 'Code (lessons about extending and customizing Drupal with custom code: PHP, JavaScript, CSS)',
+          'config' => 'Configuration',
+          'code' => 'Code',
+          'other' => 'Other',
         ),
         'allowed_values_function' => '',
       ),
@@ -233,7 +236,9 @@ function lessons_info_field_default_fields() {
       'bundle' => 'lesson',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Configuration: Lessons about site building using Drupal\'s user interface, no knowledge of code required
+Code: Lessons about extending and customizing Drupal with custom code: PHP, JavaScript, CSS
+Other: Not configuration or code',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -268,6 +273,12 @@ function lessons_info_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Configuration: Lessons about site building using Drupal\'s user interface, no knowledge of code required
+Code: Lessons about extending and customizing Drupal with custom code: PHP, JavaScript, CSS
+Other: Not configuration or code');
+  t('Core: Part of Drupal when you download it from drupal.org without any add-ons
+Contrib: Contributed modules, themes and install profiles on drupal.org
+Other: Not core or contrib');
   t('Drupal version(s)');
   t('Lesson type');
   t('Project name');
