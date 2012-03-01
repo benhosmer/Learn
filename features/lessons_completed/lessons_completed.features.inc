@@ -5,6 +5,16 @@
  */
 
 /**
+ * Implements hook_views_api().
+ */
+function lessons_completed_views_api() {
+  list($module, $api) = func_get_args();
+  if ($module == "views" && $api == "views_default") {
+    return array("version" => "3.0");
+  }
+}
+
+/**
  * Implements hook_flag_default_flags().
  */
 function lessons_completed_flag_default_flags() {
@@ -38,11 +48,11 @@ function lessons_completed_flag_default_flags() {
     'show_on_form' => 0,
     'access_author' => '',
     'i18n' => 0,
-    'api_version' => 2,
     'module' => 'lessons_completed',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 2,
   );
   return $flags;
 }
