@@ -72,7 +72,9 @@ function lessons_lists_views_default_views() {
   $handler->display->display_options['path'] = 'curriculums';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Curriculums';
+  $handler->display->display_options['menu']['weight'] = '6';
   $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
   $export['lessons_list_curriculums'] = $view;
 
   $view = new view;
@@ -368,7 +370,9 @@ function lessons_lists_views_default_views() {
   $handler->display->display_options['path'] = 'lessons';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Lessons';
+  $handler->display->display_options['menu']['weight'] = '4';
   $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
   $export['lessons_lists_lessons'] = $view;
 
   return $export;
