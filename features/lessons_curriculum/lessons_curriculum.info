@@ -1,7 +1,7 @@
 name = "Lessons: Curriculum"
 description = "Provides basic curriculum content type, to group lessons together into a "curriculum""
 core = "7.x"
-package = "Features"
+package = "Lessons"
 version = "7.x-1.0"
 project = "lessons_curriculum"
 dependencies[] = "ctools"

@@ -1,7 +1,7 @@
 name = "Lessons: Info"
 description = "Lesson info fieldset with fields for providing information about the content of the lesson"
 core = "7.x"
-package = "Features"
+package = "Lessons"
 php = "5.2.4"
 version = "7.x-1.0"
 project = "lessons_info"

@@ -1,7 +1,7 @@
 name = "Lessons: Prerequisites"
 description = "Lesson prerequisites fieldset with a text area field for describing prerequisites to doing a lesson"
 core = "7.x"
-package = "Features"
+package = "Lessons"
 version = "7.x-1.0"
 project = "lessons_prerequisites"
 dependencies[] = "ctools"

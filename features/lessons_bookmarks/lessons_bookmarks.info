@@ -1,7 +1,7 @@
 name = "Lessons: Bookmarks"
 description = "Enable users to bookmark their favorite lessons"
 core = "7.x"
-package = "Features"
+package = "Lessons"
 php = "5.2.4"
 version = "7.x-1.0"
 project = "lessons_bookmarks"

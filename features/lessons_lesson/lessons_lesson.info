@@ -1,7 +1,7 @@
 name = "Lessons: Lesson"
 description = "Core lesson content type"
 core = "7.x"
-package = "Features"
+package = "Lessons"
 version = "7.x-1.0"
 project = "lessons_lesson"
 dependencies[] = "ctools"
