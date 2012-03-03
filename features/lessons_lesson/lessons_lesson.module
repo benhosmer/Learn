@@ -5,3 +5,45 @@
  */
 
 include_once('lessons_lesson.features.inc');
+
+/**
+ * Implements hook_block_info().
+ */
+function lessons_lesson_block_info() {
+  $blocks = array();
+  $blocks['lessons_lesson_submit'] = array(
+    'info' => t('Submit Lessons'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function lessons_lesson_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'lessons_lesson_submit':
+      $links = array();
+      $links[] = array(
+        'href' => 'node/add/lesson',
+        'title' => t('Create new lesson'),
+      );
+      $links[] = array(
+        'href' => 'node/add/curriculum',
+        'title' => t('Create new curriculum'),
+      );
+
+      $block['subject'] = t('Submit Lessons');
+      $block['content'] = array(
+        '#theme' => 'links',
+        '#links' => $links,
+      );
+      break;
+  }
+
+  return $block;
+}
