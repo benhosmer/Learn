@@ -26,8 +26,8 @@ function lessons_info_field_group_info() {
       0 => 'field_lesson_drupal_version',
       1 => 'field_lesson_project_name',
       2 => 'field_lesson_project_type',
-      3 => 'field_lesson_tags',
-      4 => 'field_lesson_type',
+      3 => 'field_lesson_type',
+      4 => 'field_lesson_tags',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
