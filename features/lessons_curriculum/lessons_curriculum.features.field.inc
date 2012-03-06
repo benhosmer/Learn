@@ -61,15 +61,24 @@ function lessons_curriculum_field_default_fields() {
           'label' => 'above',
           'module' => 'entityreference',
           'settings' => array(
-            'view_mode' => 'teaser',
+            'link' => 1,
           ),
-          'type' => 'entityreference_entity_view',
+          'type' => 'entityreference_label',
           'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
+          'weight' => '1',
+        ),
+        'token' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'link' => 1,
+          ),
+          'type' => 'entityreference_label',
           'weight' => '1',
         ),
       ),
@@ -136,6 +145,13 @@ function lessons_curriculum_field_default_fields() {
           'weight' => '0',
         ),
         'teaser' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '0',
+        ),
+        'token' => array(
           'label' => 'above',
           'module' => 'text',
           'settings' => array(),
