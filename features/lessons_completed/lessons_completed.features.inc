@@ -27,10 +27,10 @@ function lessons_completed_flag_default_flags() {
     'types' => array(
       0 => 'lesson',
     ),
-    'flag_short' => 'Completed',
+    'flag_short' => 'Mark Completed',
     'flag_long' => '',
     'flag_message' => '',
-    'unflag_short' => 'Not completed',
+    'unflag_short' => 'Mark Not completed',
     'unflag_long' => '',
     'unflag_message' => '',
     'unflag_denied_text' => '',
