@@ -1,0 +1,21 @@
+.flag-lessons_complete a.flag-action, .flag-lessons-complete a.flag-action{
+color: transparent; 
+background: url(not_completed_default.png) no-repeat top;
+float:right;
+width:122px;
+height:22px;
+}
+.flag-lessons_complete a.flag-action:hover, .flag-lessons-complete a.flag-action:hover{
+background: url(not_completed.png) no-repeat top;
+}
+
+.flag-lessons_complete a.unflag-action, .flag-lessons-complete a.unflag-action{
+color: transparent; 
+background: url(completed_default.png) no-repeat top;
+float:right;
+width:122px;
+height:22px;
+}
+.flag-lessons_complete a.unflag-action:hover, .flag-lessons-complete a.unflag-action:hover{
+background: url(completed.png) no-repeat top;
+}

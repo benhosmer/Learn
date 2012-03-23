@@ -1,0 +1,21 @@
+.flag-lessons_recommend a.flag-action, .flag-lessons-recommend a.flag-action{
+color: transparent; 
+background: url(not_recommended_default.png) no-repeat top;
+float:right;
+width:122px;
+height:22px;
+}
+.flag-lessons_recommend a.flag-action:hover, .flag-lessons-recommend a.flag-action:hover{
+background: url(not_recommended.png) no-repeat top;
+}
+
+.flag-lessons_recommend a.unflag-action, .flag-lessons-recommend a.unflag-action{
+color: transparent; 
+background: url(recommended_default.png) no-repeat top;
+float:right;
+width:122px;
+height:22px;
+}
+.flag-lessons_recommend a.unflag-action:hover, .flag-lessons-recommend a.unflag-action:hover{
+background: url(recommended.png) no-repeat top;
+}

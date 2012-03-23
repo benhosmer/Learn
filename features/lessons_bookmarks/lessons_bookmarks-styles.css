@@ -1,0 +1,21 @@
+.flag-lessons_bookmark a.flag-action, .flag-lessons-bookmark a.flag-action{
+color: transparent; 
+background: url(not_bookmarked_default.png) no-repeat top;
+float:right;
+width:122px;
+height:22px;
+}
+.flag-lessons_bookmark a.flag-action:hover, .flag-lessons-bookmark a.flag-action:hover{
+background: url(not_bookmarked.png) no-repeat top;
+}
+
+.flag-lessons_bookmark a.unflag-action, .flag-lessons-bookmark a.unflag-action{
+color: transparent; 
+background: url(bookmarked_default.png) no-repeat top;
+float:right;
+width:122px;
+height:22px;
+}
+.flag-lessons_bookmark a.unflag-action:hover, .flag-lessons-bookmark a.unflag-action:hover{
+background: url(bookmarked.png) no-repeat top;
+}

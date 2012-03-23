@@ -10,3 +10,5 @@ dependencies[] = "views"
 features[ctools][] = "views:views_default:3.0"
 features[flag][] = "lessons_complete"
 features[views_view][] = "lessons_completed"
+
+stylesheets[all][] = lessons_completed-styles.css

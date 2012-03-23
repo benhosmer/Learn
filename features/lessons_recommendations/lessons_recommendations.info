@@ -10,3 +10,5 @@ dependencies[] = "views"
 features[ctools][] = "views:views_default:3.0"
 features[flag][] = "lessons_recommend"
 features[views_view][] = "lessons_my_recommendations"
+
+stylesheets[all][] = lessons_recommendations-styles.css

@@ -10,3 +10,5 @@ dependencies[] = "views"
 features[ctools][] = "views:views_default:3.0"
 features[flag][] = "lessons_bookmark"
 features[views_view][] = "lessons_my_bookmarks"
+
+stylesheets[all][] = lessons_bookmarks-styles.css
