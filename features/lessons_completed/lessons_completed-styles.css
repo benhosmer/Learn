@@ -1,30 +1,25 @@
-.flag-lessons_complete a.flag-action, .flag-lessons-complete a.flag-action {
-background: url(green-check-mark.png);
-background-repeat: no-repeat;
-background-position: right top;
-padding-right: 17%;
-
+.flag-lessons_complete a.flag-action, 
+.flag-lessons-complete a.flag-action{
+	color: transparent; 
+	background: url(completed-checkbox.png) no-repeat left bottom;
+	float:right;
+	width:122px;
+	height:22px;
+}
+.flag-lessons_complete a.flag-action:hover, 
+.flag-lessons-complete a.flag-action:hover{
+	background: url(completed-checkbox.png) no-repeat left bottom;
 }
 
-.flag-lessons_complete a.flag-action:hover, .flag-lessons-complete a.flag-action:hover {
-background: url(green-check-mark.png);
-background-repeat: no-repeat;
-background-position: right top;
-padding-right: 17%;
-
+.flag-lessons_complete a.unflag-action, 
+.flag-lessons-complete a.unflag-action{
+	color: transparent; 
+	background: url(completed-checkbox.png) no-repeat left top;
+	float:right;
+	width:122px;
+	height:22px;
 }
-
-.flag-lessons_complete a.unflag-action, .flag-lessons-complete a.unflag-action {
-background: url(gray-check-mark.png);
-background-repeat: no-repeat;
-background-position: right top;
-padding-right: 17%;
-
-}
-.flag-lessons_complete a.unflag-action:hover, .flag-lessons-complete a.unflag-action:hover {
-background: url(gray-check-mark.png);
-background-repeat: no-repeat;
-background-position: right top;
-padding-right: 17%;
-
+.flag-lessons_complete a.unflag-action:hover, 
+.flag-lessons-complete a.unflag-action:hover{
+	background: url(completed-checkbox.png) no-repeat left top;
 }
